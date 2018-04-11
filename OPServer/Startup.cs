@@ -34,7 +34,7 @@ namespace OPServer
         public void ConfigureServices(IServiceCollection services)
         {
             //// **** VERY IMPORTANT *****
-            // This is a custom extension method in Config/StartupExtensions.cs
+            // This is a custom extension method in Config/DataProtection.cs
             // These settings require your review to correctly configur data protection for your environment
             services.SetupDataProtection(Configuration, Environment);
             
@@ -42,18 +42,18 @@ namespace OPServer
             {
                 //https://docs.asp.net/en/latest/security/authorization/policies.html
                 //** IMPORTANT ***
-                //This is a custom extension method in Config/AuthorizationExtensions.cs
+                //This is a custom extension method in Config/Authorization.cs
                 //That is where you can review or customize or add additional authorization policies
                 options.SetupAuthorizationPolicies();
 
             });
 
             //// **** IMPORTANT *****
-            // This is a custom extension method in Config/StartupExtensions.cs
+            // This is a custom extension method in Config/CloudscribeFeatures.cs
             services.SetupDataStorage(Configuration);
-            
+
             //*** Important ***
-            // This is a custom extension method in Config/StartupExtensions.cs
+            // This is a custom extension method in Config/IdentityServerIntegration.cs
             // You should review this and understand what it does before deploying to production
             services.SetupIdentityServerIntegrationAndCORSPolicy(
                 Configuration,
@@ -65,20 +65,20 @@ namespace OPServer
                 );
 
             //*** Important ***
-            // This is a custom extension method in Config/StartupExtensions.cs
+            // This is a custom extension method in Config/CloudscribeFeatures.cs
             services.SetupCloudscribeFeatures(Configuration);
             
             //*** Important ***
-            // This is a custom extension method in Config/StartupExtensions.cs
+            // This is a custom extension method in Config/Localization.cs
             services.SetupLocalization();
 
            
             //*** Important ***
-            // This is a custom extension method in Config/StartupExtensions.cs
+            // This is a custom extension method in Config/RoutingAndMvc.cs
             services.SetupMvc(SslIsAvailable);
 
             //*** Important ***
-            // This is a custom extension method in Config/StartupExtensions.cs
+            // This is a custom extension method in Config/IdentityServerIntegration.cs
             services.SetupIdentityServerApiAuthentication();
             
         }
@@ -94,8 +94,6 @@ namespace OPServer
         {
             if (env.IsDevelopment())
             {
-                
-
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
                 app.UseDatabaseErrorPage();

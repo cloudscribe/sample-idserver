@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 
 namespace Microsoft.AspNetCore.Builder
 {
-    public static class RoutingExtensions
+    public static class RoutingAndMvc
     {
         public static IRouteBuilder UseCustomRoutes(this IRouteBuilder routes, bool useFolders)
         {
@@ -41,6 +41,44 @@ namespace Microsoft.AspNetCore.Builder
                 );
 
             return routes;
+        }
+
+        public static IServiceCollection SetupMvc(
+            this IServiceCollection services,
+            bool sslIsAvailable
+            )
+        {
+            services.Configure<MvcOptions>(options =>
+            {
+                if (sslIsAvailable)
+                {
+                    options.Filters.Add(new RequireHttpsAttribute());
+                }
+            });
+
+            // it is recommended to use lower case urls
+            services.AddRouting(options =>
+            {
+                options.LowercaseUrls = true;
+            });
+
+            services.AddMvc()
+                .AddRazorOptions(options =>
+                {
+                    options.AddCloudscribeViewLocationFormats();
+                    options.AddCloudscribeCommonEmbeddedViews();
+                    options.AddCloudscribeNavigationBootstrap3Views();
+                    options.AddCloudscribeCoreBootstrap3Views();
+                    options.AddCloudscribeFileManagerBootstrap3Views();
+                    options.AddCloudscribeLoggingBootstrap3Views();
+                    options.AddCloudscribeCoreIdentityServerIntegrationBootstrap3Views();
+
+                    options.ViewLocationExpanders.Add(new cloudscribe.Core.Web.Components.SiteViewLocationExpander());
+                });
+
+
+
+            return services;
         }
 
     }
