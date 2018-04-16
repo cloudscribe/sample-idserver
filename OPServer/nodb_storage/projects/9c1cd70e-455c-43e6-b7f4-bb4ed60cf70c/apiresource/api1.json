@@ -1,0 +1,1 @@
+{"ApiSecrets":[{"Description":null,"Value":"K7gNU3sdo+OL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=","Expiration":null,"Type":"SharedSecret"}],"Scopes":[{"Name":"api1","DisplayName":"api1","Description":"api1","Required":false,"Emphasize":false,"ShowInDiscoveryDocument":false,"UserClaims":[]}],"Enabled":true,"Name":"api1","DisplayName":"api1","Description":null,"UserClaims":[]}

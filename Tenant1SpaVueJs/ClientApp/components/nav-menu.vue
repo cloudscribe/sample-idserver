@@ -1,0 +1,152 @@
+<template>
+    <div class="main-nav">
+        <div class="navbar navbar-inverse">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" @click="toggleCollapsed">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Welcome {{userName}}</a>
+
+                <button type="button" @click="authenticate()" v-if="!isAuthenticated" class="btn">Login</button>
+                <button type="button"  @click="logout()" v-if="isAuthenticated" class="btn">Logout</button>
+
+            </div>
+            <div></div>
+            <div class="clearfix"></div>
+            <transition name="slide">
+                <div class="navbar-collapse collapse in" v-show="!collapsed">
+                    <ul class="nav navbar-nav">
+                        <li v-for="route in routes">
+                            <!-- TODO: highlight active link -->
+                            <router-link :to="route.path">
+                                <span :class="route.style"></span> {{ route.display }}
+                            </router-link>
+                        </li>
+                    </ul>
+                </div>
+            </transition>
+        </div>
+    </div>
+</template>
+
+<script>
+import { routes } from "../routes";
+import { UserManager } from "oidc-client";
+import config from "../config";
+export default {
+  data() {
+    return {
+      routes,
+      collapsed: true,
+      userManager: new UserManager(config),
+      isAuthenticated: false,
+      userName: "de jos"
+    };
+  },
+  created() {
+    this.userManager.events.addUserLoaded(user => {
+      console.log("user loaded");
+      console.log(user)
+    });
+
+    this.userManager.events.addAccessTokenExpired(() => {
+      console.log("token expired");
+      this.isAuthenticated = false;
+      this.userName = "";
+      this.authenticate();
+    });
+
+    if (this.isAuthResponse()) {
+      this.completeAuthentication();
+    }
+  },
+  methods: {
+    toggleCollapsed: function(event) {
+      this.collapsed = !this.collapsed;
+    },
+    getUserManager() {
+      return this.userManager;
+    },
+    isAuthResponse() {
+      return this.$route.fullPath.indexOf("id_token") > -1;
+    },
+    authenticate() {
+      console.log("login");
+      this.isAuthenticated = false;
+      this.userName = "";
+      this.$store.commit("updateSubPath", this.$router.currentRoute.fullPath);
+      return this.userManager.signinRedirect();
+    },
+    logout() {
+      console.log("logout");
+      this.userManager
+        .getUser()
+        .then(user => {
+          this.userManager
+            .signoutRedirect({})
+            .then(d => {
+              console.log("success signout");
+              console.log(d);
+            })
+            .catch(e => {
+              console.log(e);
+            });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+    completeAuthentication() {
+      console.log("complete authentication called");
+      return this.userManager
+        .signinRedirectCallback()
+        .then(data => {
+          console.log(data);
+          this.isAuthenticated = !data.expired;
+          this.userName = data.profile.name;
+          this.$store.commit("user", {
+            user: data
+          });
+          window.history.replaceState(
+            {},
+            window.document.title,
+            window.location.origin + window.location.pathname
+          );
+
+          // this.$router.push('/')
+          let previousLocation = this.$store.state.auth.subpath;
+          if (previousLocation && previousLocation.startsWith("/")) {
+            this.$router.push(previousLocation);
+          } else {
+            this.$router.push("/");
+          }
+        })
+        .catch(e => {
+          console.log("error callback");
+          this.isAuthenticated = false;
+          this.userName = "";
+          console.log(e);
+        });
+    }
+  }
+};
+</script>
+
+<style>
+.slide-enter-active,
+.slide-leave-active {
+  transition: max-height 0.35s;
+}
+.slide-enter,
+.slide-leave-to {
+  max-height: 0px;
+}
+
+.slide-enter-to,
+.slide-leave {
+  max-height: 20em;
+}
+</style>
