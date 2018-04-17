@@ -22,13 +22,20 @@ namespace XamarinFormsClient.Core
         IBrowser _browser;
         
         Lazy<HttpClient> _apiClient = new Lazy<HttpClient>(()=>new HttpClient());
+
+        private bool _isAuthenticated;
         
         public MainPage ()
 		{
 			InitializeComponent ();
 
+            Login.IsVisible = true;
             Login.Clicked += Login_Clicked;
+
+            Logout.IsVisible = false;
             Logout.Clicked += Logout_Clicked;
+
+            CallApi.IsVisible = false;
             CallApi.Clicked += CallApi_Clicked;
 
             _browser = DependencyService.Get<IBrowser>();
@@ -56,6 +63,13 @@ namespace XamarinFormsClient.Core
         private async void Logout_Clicked(object sender, EventArgs e)
         {
             var logoutRequest =  new LogoutRequest();
+            _isAuthenticated = false;
+
+            CallApi.IsVisible = false;
+            Login.IsVisible = true;
+            Logout.IsVisible = false;
+
+            OutputText.Text = string.Empty;
             await _client.LogoutAsync(logoutRequest);  
         }
 
@@ -68,6 +82,11 @@ namespace XamarinFormsClient.Core
                 OutputText.Text = _result.Error;
                 return;
             }
+
+            _isAuthenticated = true;
+            CallApi.IsVisible = true;
+            Login.IsVisible = false;
+            Logout.IsVisible = true;
 
             var sb = new StringBuilder(128);
             foreach (var claim in _result.User.Claims)
@@ -93,6 +112,7 @@ namespace XamarinFormsClient.Core
 
             if (result.IsSuccessStatusCode)
             {
+               
                 OutputText.Text = JArray.Parse(await result.Content.ReadAsStringAsync()).ToString();
             }
             else
