@@ -1,8 +1,10 @@
 ﻿using IdentityServer4.AccessTokenValidation;
+using IdentityServer4.Validation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using OPServer.Components.IdServer;
 using System;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
@@ -30,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     //customization
                     // not sure these are needed, need to comment out and test xamarin app
                     //services.AddTransient<ICorsPolicyService, IdServerCorsPolicy>();
-                    //services.AddTransient<IRedirectUriValidator, IdServerRedirectValidator>();
+                    services.AddTransient<IRedirectUriValidator, IdServerRedirectValidator>();
 
                     var idsBuilder = services.AddIdentityServerConfiguredForCloudscribe(options =>
                     {
