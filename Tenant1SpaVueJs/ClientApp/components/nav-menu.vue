@@ -43,22 +43,10 @@ export default {
       collapsed: true,
       userManager: new UserManager(config),
       isAuthenticated: false,
-      userName: "de jos"
+      userName: ""
     };
   },
   created() {
-    this.userManager.events.addUserLoaded(user => {
-      console.log("user loaded");
-      console.log(user)
-    });
-
-    this.userManager.events.addAccessTokenExpired(() => {
-      console.log("token expired");
-      this.isAuthenticated = false;
-      this.userName = "";
-      this.authenticate();
-    });
-
     if (this.isAuthResponse()) {
       this.completeAuthentication();
     }
@@ -77,7 +65,7 @@ export default {
       console.log("login");
       this.isAuthenticated = false;
       this.userName = "";
-      this.$store.commit("updateSubPath", this.$router.currentRoute.fullPath);
+      this.$store.commit("updatePreviousLocation", this.$router.currentRoute.fullPath);
       return this.userManager.signinRedirect();
     },
     logout() {
@@ -95,9 +83,6 @@ export default {
               console.log(e);
             });
         })
-        .catch(e => {
-          console.log(e);
-        });
     },
     completeAuthentication() {
       console.log("complete authentication called");
@@ -110,19 +95,7 @@ export default {
           this.$store.commit("user", {
             user: data
           });
-          window.history.replaceState(
-            {},
-            window.document.title,
-            window.location.origin + window.location.pathname
-          );
-
-          // this.$router.push('/')
-          let previousLocation = this.$store.state.auth.subpath;
-          if (previousLocation && previousLocation.startsWith("/")) {
-            this.$router.push(previousLocation);
-          } else {
-            this.$router.push("/");
-          }
+          this.fixHistory()
         })
         .catch(e => {
           console.log("error callback");
@@ -130,6 +103,20 @@ export default {
           this.userName = "";
           console.log(e);
         });
+    },
+    fixHistory() {
+      // avoids that the user can navigate back into the login screen
+      window.history.replaceState(
+            {},
+            window.document.title,
+            window.location.origin + window.location.pathname
+          );
+      let previousLocation = this.$store.state.auth.previousLocation;
+      if (previousLocation && previousLocation.startsWith("/")) {
+        this.$router.push(previousLocation);
+      } else {
+        this.$router.push("/");
+      }
     }
   }
 };

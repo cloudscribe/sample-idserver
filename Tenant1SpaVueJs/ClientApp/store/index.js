@@ -9,7 +9,7 @@ const store = new Vuex.Store({
     plugins: [createPersistedState({
         storage: window.sessionStorage,
         reducer: state => ({ // so provide here the states you want to persist
-            subPath: state.auth.subpath
+            previousLocation: state.auth.previousLocation
         })
     })],
     strict: true,

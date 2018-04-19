@@ -3,14 +3,14 @@
 
 export default {
     state: {
-        subpath: '/',
+        previousLocation: '/',
         user: {}
     },
     getters: {
     },
     mutations: {
-        updateSubPath(state, payload) {
-            state.subpath = payload
+        updatePreviousLocation(state, payload) {
+            state.previousLocation = payload
         },
         user(state, payload) {
             state.user = payload.user
