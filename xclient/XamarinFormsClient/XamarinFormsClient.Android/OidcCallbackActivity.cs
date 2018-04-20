@@ -33,6 +33,8 @@ namespace XamarinFormsClient.Droid
             {
                 base.OnCreate(savedInstanceState);
 
+                var intent = Intent.DataString;
+
                 Callbacks?.Invoke(Intent.DataString);
 
                 Finish();

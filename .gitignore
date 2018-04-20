@@ -263,4 +263,6 @@ cloudscribe-core-nodb/src/WebApp/nodb_storage/**
 **/nodb_storage/projects/**/userlocation/**
 *.rsa
 WebpackSample/WebApp/wwwroot/dist/**
+**/nodb_storage/projects/**/grantitem/**
+
 
