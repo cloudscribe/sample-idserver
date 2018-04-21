@@ -17,7 +17,7 @@ IdentityServer4 implements all the needed protocols for OpenIdConnect and it pro
 
 cloudscribe Core libraries provides the actual management and storage of user, roles, and claims data, and optionally provides [multi-tenancy](https://www.cloudscribe.com/docs/multi-tenant-support) so that you can host multiple sites in a single installation each with their own Users, Roles, and Claims.
 
-cloudscribe Core IdentityServer4 integrartion libraries provide management and storage for all the operational data needed for IdentityServer4 to mange Apis and Api clients.
+cloudscribe Core IdentityServer4 integration libraries provide management and storage for all the operational data needed for IdentityServer4 to mange Apis and Api clients.
 
 
 #### What is OpenIdConnect (in brief)
@@ -26,7 +26,7 @@ You probably have seen sites that use social authentication, ie you can login us
 
 IdentityServer4 enables you to stand up your own OpenIdConnect provider similar to those services by large companies, and it also provides federation so that you can combine those social authentication providers all in one service, ie you can optionally enable Facebook, Twitter, Microsoft, Google, or any other 3rd party OpenIdConnect provider into your IdentityServer4 OpenIdConnect Provider server.
 
-OpenIdConnect allows you to separate the authentication and authorization back end from the API's that will be protected and from the Client applications that will access the apis so that each can run as separaste web app installations. Client applications can authenticate against the OpenIdConnect Provider which issues JWT authentication tokens. The client applications pass the JWT token as headers when making requests to the apis, and the apis can validate the tokens agsainst the OpenIdConnect Provider service.
+OpenIdConnect allows you to separate the authentication and authorization back end from the API's that will be protected and from the Client applications that will access the apis so that each can run as separate web app installations. Client applications can authenticate against the OpenIdConnect Provider which issues JWT authentication tokens. The client applications pass the JWT token as a header when making requests to the apis, and the apis can validate the tokens against the OpenIdConnect Provider service.
 
 ### About the Projects in the Solution
 
@@ -41,11 +41,11 @@ The OPServer project is configured with 2 "tenants", ie 2 sites in one installat
 * Tenant1 runs at http://localhost:50405/
 * Tenant2 runs at http://localhost:50405/two
 
-You can login directly to the OPServer tenants using the corresponding administrator credentials below, then a new Administration menu item will appear. Look around the administration area to see how to manage user,s roles, claims, clients, apis, and more or even create additional tenants if you like.
+You can login directly to the OPServer tenants using the corresponding administrator credentials below, then a new Administration menu item will appear. Look around the administration area to see how to manage users roles, claims, clients, apis, and more or even create additional tenants if you like.
 
 Note also that the root tenant is the master tenant, administrators in the root tenant can create new tenants and manage other tenants, but administrators in Tenant2 can only manage Tenant2 and cannot create new tenants. You will only see the Site List and buttons to create new sites in the master tenant admin area.
 
-When you login directly to the OPServer it is using cookie authentication, whereas the clients use JWT authentication to talk to apis. Since the OPServer and the web clients all run on localhost it is best to use different browsers for each such as Chrome for the client, Firefox for the OPServer to keep the cookies isolated. Ther browser isolates cookies by host name but since localhost is always the host name for these samples there isn't isolation like you would have in a deployment to different domains.
+When you login directly to the OPServer it is using cookie authentication, whereas the clients use JWT authentication to talk to apis. Since the OPServer and the web clients all run on localhost it is best to use different browsers for each such as Chrome for the client, Firefox for the OPServer to keep the cookies isolated. The browser isolates cookies by host name but since localhost is always the host name for these samples there isn't isolation like you would have in a deployment to different domains.
 
 ##### Tenant1 Test Users
 
@@ -71,7 +71,7 @@ All of the sample clients can authenticate using the test user credentials shown
 
 ##### Tenant1SpaVueJs http://localhost:5900/
 
-This client uses [VueJs](https://vuejs.org/) for the UI and authenticates against the root tenant of the OPServer, so you can use the Tenant1 test users. It calls an api in the Tenant1Api project, so to try this project you need to run OPServer, Tenant1Api, and Tenant1SpaVueJs projects.
+This client uses [VueJs](https://vuejs.org/) for the UI and authenticates against the root tenant of the OPServer, so you can use the Tenant1 test users. It calls an api in the Tenant1Api project, so to try this project you need to run OPServer, Tenant1Api, and Tenant1SpaVueJs projects. Thanks to Paul Van Bladel for contributing this sample client.
 
 ##### Tenant1Api
 
@@ -87,7 +87,7 @@ In this sample the client html and js are hosted in the same project with the as
 
 This client uses [Google Polymer](https://www.polymer-project.org/) for the UI and authenticates against the root tenant of the OPServer, so you can use the Tenant1 test users.
 
-This sample is almost identitcal to Tenant1SpaPolymer, except that it consumes an API that lives in the OPServer project. Thus client project is an ASP.NET Core web application but it only serves static files, it doesn't have any controllers of its own. The main reason for this project is to show the flexibility that the apis and clients and the OpServer can be separate web apps or they can also be combined, ie the apis can be in the same app as the OpServer, in the same app as the client side code, or completely separate applications at different urls.
+This sample is almost identitcal to Tenant1SpaPolymer, except that it consumes an API that lives in the OPServer project. This client project is an ASP.NET Core web application but it only serves static files, it doesn't have any controllers of its own. The main reason for this project is to show the flexibility that the apis and clients and the OpServer can be separate web apps or they can also be combined, ie the apis can be in the same app as the OpServer, in the same app as the client side code, or completely separate applications at different urls.
 
 ##### Tenant2SpaPolymer http://localhost:5011/
 
@@ -97,7 +97,11 @@ In this sample the client html and js are hosted in the same project with the as
 
 ##### Xamarin Android Client
 
-This sample is in a separate solution by itself in the [xclient folder](/xclient) because it requires additional Xamarin tooling and Android emulator to get it working. There is a [YouTube Video](https://www.youtube.com/watch?v=T7WxxYG71zE&feature=youtu.be) that shows this sample running in the emulator. It authenticates against the root tenant of the OPServer project and consumes an api that lives withing the OPServer project, so you only need the OPserver project running to test it.
+This sample is in a separate solution by itself in the [xclient folder](/xclient) because it requires additional Xamarin tooling and Android emulator to get it working. There is a [YouTube Video](https://www.youtube.com/watch?v=T7WxxYG71zE&feature=youtu.be) that shows this sample running in the emulator. It authenticates against the root tenant of the OPServer project and consumes an api that lives within the OPServer project, so you only need the OPserver project running to test it.
+
+#### React and Angular Client Samples
+
+[Help wanted to produce samples for React and Angular](https://github.com/cloudscribe/sample-idserver/issues/2)
 
 ##### TIPs:
 
@@ -105,7 +109,7 @@ We used "folder" based [multi-tenancy](https://www.cloudscribe.com/docs/multi-te
 
 We used [NoDb](https://github.com/cloudscribe/NoDb) file system based storage for this demo because that way we could commit the data files to this repo and have the clients and server all setup and working for you to try. For a real deployment you should use one of the other supported storage layers such as [Microsoft SqlServer, PostgreSql, or MySql](https://www.cloudscribe.com/docs/complete-list-of-cloudscribe-libraries)
 
-Some of the file paths used for NoDb storage can exceed the file path limitations on Windows. Therefore it is best to clone or download this project into a very short folder path to keep the file paths as short as possible. ie I am using c:\c as my root folder for this repository and I don't run into any path too long errors, but if you put it in a deeper folder it is possible you will encounter such errors with this sample.
+Some of the file paths used for NoDb storage and some of the Xamarin Android package names can exceed the file path limitations on Windows. Therefore it is best to clone or download this project into a very short folder path to keep the file paths as short as possible. ie I am using c:\c as my root folder for this repository and I don't run into any path too long errors, but if you put it in a deeper folder it is possible you will encounter such errors with this sample solution.
 
 ## Client Configuration
 
