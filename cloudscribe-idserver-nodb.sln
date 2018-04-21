@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenant1SpaLocalApi", "Tenan
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenant1SpaVueJs", "Tenant1SpaVueJs\Tenant1SpaVueJs.csproj", "{FD64BB18-E45F-465C-9D41-FDC637805DFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Api", "Api\Api.csproj", "{2616508E-9C2E-4EF2-BBF7-F0EFC96B4CFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenant1Api", "Tenant1Api\Tenant1Api.csproj", "{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{FD64BB18-E45F-465C-9D41-FDC637805DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD64BB18-E45F-465C-9D41-FDC637805DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD64BB18-E45F-465C-9D41-FDC637805DFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2616508E-9C2E-4EF2-BBF7-F0EFC96B4CFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2616508E-9C2E-4EF2-BBF7-F0EFC96B4CFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2616508E-9C2E-4EF2-BBF7-F0EFC96B4CFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2616508E-9C2E-4EF2-BBF7-F0EFC96B4CFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

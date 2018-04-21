@@ -9,9 +9,9 @@ If you are new to cloudscribe please see the [Introduction](https://www.cloudscr
 [![Build Status](https://travis-ci.org/cloudscribe/sample-idserver.svg?branch=master)](https://travis-ci.org/cloudscribe/sample-idserver) 
 
 
-# Using cloudscribe Core with IdentityServer4 and NoDb 
+# Using cloudscribe Core with IdentityServer4
 
-cloudscribe Core and IdentityServer4 integration provides a compelling solution that makes it easy to provision new OP (OpenId Connect Provider) Servers each with their own Users, Roles, Claims, Clients, and Scopes. It includes a UI for managing all the needed data including role and claim assignments for users.
+cloudscribe Core and IdentityServer4 integration provides a compelling solution that makes it easy to provision new OpenId Connect Provider server endpoints each with their own Users, Roles, Claims, Clients, and Scopes. It includes a UI for managing all the needed data including role and claim assignments for users, api resources, identity resources and api clients.
 
 There are 2 mutually exclusive multi-tenancy configuration options. Tenants can be based on host names, or tenants can be based on the first folder segment of the url. This sample uses the folder segment approach. Folder tenants eare easier to provision than host name tenants because there are no additional DNS records needed and no additional SSL certificate is needed, you create new tenants from the UI and they work immediately.
 

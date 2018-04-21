@@ -3,7 +3,7 @@
       <div class="col">
         <button @click="CallApi()">Call Api</button>
         <div>Identity seen through the eyes of the API</div>
-        <pre>{{identityData }}</pre>
+        <pre>{{identityData}}</pre>
       </div>
       
       <div class="col">
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import config from "../config";
 import Vue from "vue";
 export default {
   computed: {
@@ -30,7 +31,7 @@ export default {
   },
   methods: {
     CallApi() {
-      this.axios.get("http://localhost:5901/api/identity").then(d => {
+      this.axios.get(config.apiUrl).then(d => {
         this.identityData = d.data;
       });
     }

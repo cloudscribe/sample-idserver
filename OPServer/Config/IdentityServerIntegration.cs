@@ -32,7 +32,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     //customization
                     // not sure these are needed, need to comment out and test xamarin app
                     //services.AddTransient<ICorsPolicyService, IdServerCorsPolicy>();
-                    services.AddTransient<IRedirectUriValidator, IdServerRedirectValidator>();
+                    //services.AddTransient<IRedirectUriValidator, IdServerRedirectValidator>();
 
                     var idsBuilder = services.AddIdentityServerConfiguredForCloudscribe(options =>
                     {
