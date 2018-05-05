@@ -45,6 +45,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         // but this does not seem to be the case for the other clients
 
                         options.IssuerUri = "http://10.0.2.2:50405";
+                        options.UserInteraction.ErrorUrl = "/oops/error";
 
                     }).AddCloudscribeCoreNoDbIdentityServerStorage()
                       .AddCloudscribeIdentityServerIntegrationMvc();
