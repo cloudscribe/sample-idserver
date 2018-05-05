@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,10 +46,7 @@ namespace Tenant1SpaVueJs
                     HotModuleReplacement = true
                 });
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-            }
+            
 
             app.UseStaticFiles();
 
