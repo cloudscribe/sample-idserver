@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenant1SpaVueJs", "Tenant1S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenant1Api", "Tenant1Api\Tenant1Api.csproj", "{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tenant1PureJs", "Tenant1PureJs\Tenant1PureJs.csproj", "{73545365-3C4A-41EB-A75E-2E29DC61B2FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FA1CB1E-A9B4-4A13-927E-5076DF46C0E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73545365-3C4A-41EB-A75E-2E29DC61B2FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73545365-3C4A-41EB-A75E-2E29DC61B2FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73545365-3C4A-41EB-A75E-2E29DC61B2FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73545365-3C4A-41EB-A75E-2E29DC61B2FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
