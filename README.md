@@ -73,6 +73,10 @@ All of the sample clients can authenticate using the test user credentials shown
 
 This client uses [VueJs](https://vuejs.org/) for the UI and authenticates against the root tenant of the OPServer, so you can use the Tenant1 test users. It calls an api in the Tenant1Api project, so to try this project you need to run OPServer, Tenant1Api, and Tenant1SpaVueJs projects. Thanks to Paul Van Bladel for contributing this sample client.
 
+##### Tenant1PureJs http://localhost:5800/
+
+This client uses no specific SPA framework for the UI, it is pure javascript and authenticates against the root tenant of the OPServer, so you can use the Tenant1 test users. It calls an api in the Tenant1Api project, so to try this project you need to run OPServer, Tenant1Api, and Tenant1PureJs projects. Thanks to Paul Van Bladel for contributing this sample client.
+
 ##### Tenant1Api
 
 This project just has a simple api controller, the api is consumed by the Tenant1SpaVueJs client and it validates the JWT authentication token against the OPserver project.
