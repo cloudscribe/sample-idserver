@@ -16,19 +16,20 @@ namespace OPServer
             ILogger<Startup> logger
             )
         {
-            Configuration = configuration;
-            Environment = env;
+            _configuration = configuration;
+            _environment = env;
             _log = logger;
-            SslIsAvailable = Configuration.GetValue<bool>("AppSettings:UseSsl");
-            DisableIdentityServer = Configuration.GetValue<bool>("AppSettings:DisableIdentityServer");
+
+            _sslIsAvailable = _configuration.GetValue<bool>("AppSettings:UseSsl");
+            _disableIdentityServer = _configuration.GetValue<bool>("AppSettings:DisableIdentityServer");
         }
 
-        private IConfiguration Configuration { get; }
-        private IHostingEnvironment Environment { get; set; }
-        private bool SslIsAvailable { get; set; }
-        private bool DisableIdentityServer { get; set; }
-        private bool didSetupIdServer = false;
-        private ILogger _log;
+        private readonly IConfiguration _configuration;
+        private readonly IHostingEnvironment _environment;
+        private readonly bool _sslIsAvailable;
+        private readonly bool _disableIdentityServer;
+        private bool _didSetupIdServer = false;
+        private readonly ILogger _log;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,7 +37,7 @@ namespace OPServer
             //// **** VERY IMPORTANT *****
             // This is a custom extension method in Config/DataProtection.cs
             // These settings require your review to correctly configur data protection for your environment
-            services.SetupDataProtection(Configuration, Environment);
+            services.SetupDataProtection(_configuration, _environment);
             
             services.AddAuthorization(options =>
             {
@@ -50,32 +51,45 @@ namespace OPServer
 
             //// **** IMPORTANT *****
             // This is a custom extension method in Config/CloudscribeFeatures.cs
-            services.SetupDataStorage(Configuration);
+            services.SetupDataStorage(_configuration);
 
             //*** Important ***
             // This is a custom extension method in Config/IdentityServerIntegration.cs
             // You should review this and understand what it does before deploying to production
             services.SetupIdentityServerIntegrationAndCORSPolicy(
-                Configuration,
-                Environment,
+                _configuration,
+                _environment,
                 _log,
-                SslIsAvailable,
-                DisableIdentityServer,
-                out didSetupIdServer
+                _sslIsAvailable,
+                _disableIdentityServer,
+                out _didSetupIdServer
                 );
 
             //*** Important ***
             // This is a custom extension method in Config/CloudscribeFeatures.cs
-            services.SetupCloudscribeFeatures(Configuration);
+            services.SetupCloudscribeFeatures(_configuration);
             
             //*** Important ***
             // This is a custom extension method in Config/Localization.cs
             services.SetupLocalization();
 
-           
+            services.Configure<CookiePolicyOptions>(options =>
+            {
+                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+                options.CheckConsentNeeded = cloudscribe.Core.Identity.SiteCookieConsent.NeedsConsent;
+                options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
+                options.ConsentCookie.Name = "cookieconsent_status";
+            });
+
+            services.Configure<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>(options =>
+            {
+                options.Cookie.IsEssential = true;
+            });
+
+
             //*** Important ***
             // This is a custom extension method in Config/RoutingAndMvc.cs
-            services.SetupMvc(SslIsAvailable);
+            services.SetupMvc(_sslIsAvailable);
 
             //*** Important ***
             // This is a custom extension method in Config/IdentityServerIntegration.cs
@@ -95,7 +109,6 @@ namespace OPServer
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
                 app.UseDatabaseErrorPage();
             }
             else
@@ -103,8 +116,14 @@ namespace OPServer
                 app.UseExceptionHandler("/oops/Error");
             }
 
-            app.UseForwardedHeaders();
+            if (_sslIsAvailable)
+            {
+                app.UseHttpsRedirection();
+            }
+
             app.UseStaticFiles();
+            app.UseCloudscribeCommonStaticFiles();
+            app.UseCookiePolicy();
 
             app.UseRequestLocalization(localizationOptionsAccessor.Value);
 
@@ -115,9 +134,9 @@ namespace OPServer
             app.UseCloudscribeCore(
                     loggerFactory,
                     multiTenantOptions,
-                    SslIsAvailable);
+                    _sslIsAvailable);
 
-            if (!DisableIdentityServer && didSetupIdServer)
+            if (!_disableIdentityServer && _didSetupIdServer)
             {
                 try
                 {

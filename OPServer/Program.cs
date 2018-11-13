@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace OPServer
 {
@@ -11,7 +12,8 @@ namespace OPServer
     {
         public static void Main(string[] args)
         {
-            var host = BuildWebHost(args);
+            var hostBuilder = CreateWebHostBuilder(args);
+            var host = hostBuilder.Build();
 
             using (var scope = host.Services.CreateScope())
             {
@@ -31,15 +33,17 @@ namespace OPServer
 
             var env = host.Services.GetRequiredService<IHostingEnvironment>();
             var loggerFactory = host.Services.GetRequiredService<ILoggerFactory>();
-            ConfigureLogging(env, loggerFactory, host.Services);
+            var config = host.Services.GetRequiredService<IConfiguration>();
+            ConfigureLogging(env, loggerFactory, host.Services, config);
 
             host.Run();
         }
 
-        public static IWebHost BuildWebHost(string[] args) =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>()
-                .Build();
+                .UseStartup<Startup>();
+
+        
 
         private static void EnsureDataStorageIsReady(IServiceProvider scopedServices)
         {
@@ -50,41 +54,60 @@ namespace OPServer
         private static void ConfigureLogging(
             IHostingEnvironment env,
             ILoggerFactory loggerFactory,
-            IServiceProvider serviceProvider
+            IServiceProvider serviceProvider,
+            IConfiguration config
             )
         {
-            // a customizable filter for db logging
-            Func<string, LogLevel, bool> logFilter = (string loggerName, LogLevel logLevel) =>
+            var dbLoggerConfig = config.GetSection("DbLoggerConfig").Get<cloudscribe.Logging.Models.DbLoggerConfig>();
+            LogLevel minimumLevel;
+            string levelConfig;
+            if (env.IsProduction())
             {
-                LogLevel minimumLevel;
-                if (env.IsProduction())
-                {
-                    minimumLevel = LogLevel.Warning;
-                }
-                else
-                {
+                levelConfig = dbLoggerConfig.ProductionLogLevel;
+            }
+            else
+            {
+                levelConfig = dbLoggerConfig.DevLogLevel;
+            }
+            switch (levelConfig)
+            {
+                case "Debug":
                     minimumLevel = LogLevel.Debug;
-                }
+                    break;
 
-                // add exclusions to remove noise in the logs
-                var excludedLoggers = new List<string>
+                case "Information":
+                    minimumLevel = LogLevel.Information;
+                    break;
+
+                case "Trace":
+                    minimumLevel = LogLevel.Trace;
+                    break;
+
+                default:
+                    minimumLevel = LogLevel.Warning;
+                    break;
+            }
+
+            // a customizable filter for logging
+            // add exclusions in appsettings.json to remove noise in the logs
+            bool logFilter(string loggerName, LogLevel logLevel)
+            {
+                if (dbLoggerConfig.ExcludedNamesSpaces.Any(f => loggerName.StartsWith(f)))
                 {
-                    "Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware",
-                    "Microsoft.AspNetCore.Hosting.Internal.WebHost",
-                };
+                    return false;
+                }
 
                 if (logLevel < minimumLevel)
                 {
                     return false;
                 }
 
-                if (excludedLoggers.Contains(loggerName))
+                if (dbLoggerConfig.BelowWarningExcludedNamesSpaces.Any(f => loggerName.StartsWith(f)) && logLevel < LogLevel.Warning)
                 {
                     return false;
                 }
-
                 return true;
-            };
+            }
 
             loggerFactory.AddDbLogger(serviceProvider, logFilter);
         }

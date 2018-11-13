@@ -21,6 +21,8 @@ namespace Microsoft.Extensions.DependencyInjection
             )
         {
             services.AddCloudscribeLogging();
+            services.AddScoped<cloudscribe.Web.Navigation.INavigationNodePermissionResolver, cloudscribe.Web.Navigation.NavigationNodePermissionResolver>();
+            
             services.AddCloudscribeCoreMvc(config);
 
             return services;
