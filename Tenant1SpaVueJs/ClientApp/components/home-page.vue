@@ -1,16 +1,18 @@
 <template>
-      <div class="row">
-      <div class="col">
-        <button @click="CallApi()">Call Api</button>
-        <div>Identity seen through the eyes of the API</div>
-        <pre>{{identityData}}</pre>
-      </div>
-      
-      <div class="col">
-          
-        <div>Claims: Identity seen through the eyes of the spa application</div>
-       <pre> {{claimsData}}</pre>
-      </div>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <button @click="CallApi()">Call Api</button>
+                <div>Identity seen through the eyes of the API</div>
+                <pre>{{identityData}}</pre>
+            </div>
+
+            <div class="col">
+
+                <div>Claims: Identity seen through the eyes of the spa application:</div>
+                <pre> {{claimsData}}</pre>
+            </div>
+        </div>
     </div>
 </template>
 

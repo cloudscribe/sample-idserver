@@ -1,35 +1,55 @@
 <template>
-    <div class="main-nav">
-        <div class="navbar navbar-inverse">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" @click="toggleCollapsed">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Welcome {{userName}}</a>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">Welcome {{userName}}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-                <button type="button" @click="authenticate()" v-if="!isAuthenticated" class="btn">Login</button>
-                <button type="button"  @click="logout()" v-if="isAuthenticated" class="btn">Logout</button>
-
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li v-for="route in routes" class="nav-item">
+                        <router-link :to="route.path"> <span :class="route.style"></span> {{ route.display }}</router-link>
+                    </li>
+                </ul>
+                <form class="form-inline">
+                    <button type="button" @click="authenticate()" v-if="!isAuthenticated" class="btn">
+                        Login
+                    </button>
+                    <button type="button" @click="logout()" v-if="isAuthenticated" class="btn">
+                        Logout
+                    </button>
+                </form>
             </div>
-            <div></div>
-            <div class="clearfix"></div>
-            <transition name="slide">
-                <div class="navbar-collapse collapse in" v-show="!collapsed">
-                    <ul class="nav navbar-nav">
-                        <li v-for="route in routes">
-                            <!-- TODO: highlight active link -->
-                            <router-link :to="route.path">
-                                <span :class="route.style"></span> {{ route.display }}
-                            </router-link>
-                        </li>
-                    </ul>
-                </div>
-            </transition>
-        </div>
+        </nav>
     </div>
+    <!--<nav class="navbar navbar-dark bg-dark navbar-expand-md">
+        <a class="navbar-brand" href="/">Welcome {{userName}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="navbar-collapse collapse show"  id="navbarSupportedContent" v-show="!collapsed">
+            <ul class="nav navbar-nav">
+                <li v-for="route in routes" class="nav-item">
+                    <router-link :to="route.path"> <span :class="route.style"></span> {{ route.display }}</router-link>
+                </li>
+            </ul>
+        </div>
+
+
+        <button type="button" @click="authenticate()" v-if="!isAuthenticated" class="btn">
+            Login
+        </button>
+        <button type="button" @click="logout()" v-if="isAuthenticated" class="btn">
+            Logout
+        </button>
+
+
+
+    </nav>-->
+
 </template>
 
 <script>
