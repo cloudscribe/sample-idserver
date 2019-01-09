@@ -50,6 +50,9 @@ namespace Microsoft.AspNetCore.Builder
         {
             services.Configure<MvcOptions>(options =>
             {
+                //2.2 sdk
+                //options.EnableEndpointRouting = false;
+
                 if (sslIsAvailable)
                 {
                     options.Filters.Add(new RequireHttpsAttribute());
