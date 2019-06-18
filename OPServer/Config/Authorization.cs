@@ -33,6 +33,13 @@ namespace Microsoft.Extensions.DependencyInjection
                     authBuilder.RequireRole("Administrators");
                 });
 
+            options.AddPolicy(
+            "FileUploadPolicy",
+            authBuilder =>
+            {
+                authBuilder.RequireRole("Administrators", "Content Administrators");
+            });
+
             // add other policies here 
 
             return options;
