@@ -73,18 +73,19 @@ namespace OPServer
             // This is a custom extension method in Config/Localization.cs
             services.SetupLocalization();
 
-            services.Configure<CookiePolicyOptions>(options =>
-            {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-                options.CheckConsentNeeded = cloudscribe.Core.Identity.SiteCookieConsent.NeedsConsent;
-                options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
-                options.ConsentCookie.Name = "cookieconsent_status";
-            });
+            //services.Configure<CookiePolicyOptions>(options =>
+            //{
+            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //    options.CheckConsentNeeded = cloudscribe.Core.Identity.SiteCookieConsent.NeedsConsent;
+            //    options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.None;
+            //    options.ConsentCookie.Name = "cookieconsent_status";
+            //    options.ConsentCookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.SameAsRequest;
+            //});
 
-            services.Configure<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>(options =>
-            {
-                options.Cookie.IsEssential = true;
-            });
+            //services.Configure<Microsoft.AspNetCore.Mvc.CookieTempDataProviderOptions>(options =>
+            //{
+            //    options.Cookie.IsEssential = true;
+            //});
 
 
             //*** Important ***
