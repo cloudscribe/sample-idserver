@@ -5,7 +5,7 @@
   "devDependencies": {
     "bootstrap": "4.3.1",
     "popper.js": "1.14.3",
-    "lodash": ">=4.17.19",
+    "lodash": ">=4.17.21",
     "lodash.template": ">=4.5.0",
     "clean-css": ">=4.1.11",
     "minimatch": ">=3.0.2",
